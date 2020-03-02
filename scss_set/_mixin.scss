@@ -163,6 +163,14 @@
 
 
 //-------------------テキスト系-------------------
+//leffter-spacing
+//$ls -> PSDの文字間（px）
+@mixin ls( $ls ) {
+  letter-spacing: $ls / 1000 + em;
+}
+// .hoge { @include ls(5); }  //letter-spacing: 0.005em;
+
+
 //text両端揃え
 @mixin justify {
 	text-align: justify; // 両端揃え
