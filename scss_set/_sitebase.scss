@@ -4,8 +4,12 @@
 ------------------------------------------------ */
 //制作するサイトのベースとなるスタイルを記載
 html {
-  @include fz625; // 16px x 0.625 = 10px(=1rem) //mixin.scss
+  @if $fz625 == yes {
+    @include fz625; // 16px x 0.625 = 10px(=1rem) //mixin.scss
+  }
 }
+
+
 body {
   min-width: calc(#{$width_outer} + #{$browse_gutter});
   color: $font_color_base;     //variable.scss

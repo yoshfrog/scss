@@ -1,23 +1,151 @@
 @charset "utf-8";
 //  Mixin
 
-//-------------------フォント／テキスト系-------------------
-@mixin fz625 { font-size:62.5%; }  //body { @include fz625; }
+//-------------------フォント系-------------------
+@mixin fz625 { font-size: 62.5%; }  //body { @include fz625; }
 
-//10が基準 body {font-size:62.5%;}指定してる時に使用
-@mixin fz10($size) {
-	font-size: $size + px;
-	font-size: ($size / 10)  + rem;
+//rem
+@mixin fzr($fz) {
+  @if $fz625 == yes {
+    $base: 10;                        //10px = 1rem        html {font-size:62.5%;}指定してる時に使用
+    font-size: ($fz / $base) * 1rem;  //font-size: 1.6rem;
+  } @else {
+    $base: 16;                        //16px = 1rem        html {font-size:62.5%;}指定していない時に使用
+    font-size: ($fz / $base) * 1rem;  //font-size: 1rem;
+  }
 }
-// .hoge { @include fz10(16); }  ->  font-size: 16px; font-size: 1.6rem;
+// .hoge { @include fzr(16); }  ->  font-size: 1.6 or 1 rem;
 
-//基準値を指定できる body {font-size:62.5%;}指定していない場合に使用
-@mixin fz($size, $base: 16) {
-	font-size: $size + px;
-	font-size: ($size / $base) + rem;
+//px + line-height  $lh -> PSDの行送り（px）
+@mixin fzlh($fz, $lh: 24) {
+  font-size: #{$fz}px;
+  line-height: $lh / $fz;
 }
-// .hoge { @include fz(16); }  ->  font-size: 16px; font-size: 1rem;
+// .hoge { @include fzlh(16, 24); }  ->  font-size: 16px;  line-height: 1.5;
 
+//rem + line-height  $lh -> PSDの行送り（px）
+@mixin fzrlh($fz, $lh: 24) {
+  @if $fz625 == yes {
+    $base: 10;                        //10px = 1rem
+    font-size: ($fz / $base) * 1rem;  //font-size: 1.6rem;
+    line-height: $lh / $fz;
+  } @else {
+    $base: 16;                        //16px = 1rem
+    font-size: ($fz / $base) * 1rem;  //font-size: 1rem;
+    line-height: $lh / $fz;
+  }
+}
+// .hoge { @include fzrlh(16, 24); }  ->  font-size: 1.6 or 1 rem;  line-height: 1.5;
+
+//-------------------margin/padding vs line-height-------------------
+//margin - line-height
+//$lh -> PSDの行送り（px）
+@mixin mgnlh($direction, $mgn, $fz, $lh) {     //単位 全て px
+  @if $direction == top {
+    margin-top: #{($mgn - (($fz * ($lh / $fz)) - $fz) / 2)}px;
+  } @else if $direction == bottom {
+    margin-bottom: #{($mgn - (($fz * ($lh / $fz)) - $fz) / 2)}px;
+  }
+}
+// .hoge { @include mgnlh(top, 30, 10, 20); }  //margin-top: 25px;
+
+//padding - line-height
+//$lh -> PSDの行送り（px）
+@mixin pdglh($direction, $pdg, $fz, $lh) {     //単位 全て px
+  @if $direction == top {
+    padding-top: #{($pdg - (($fz * ($lh / $fz)) - $fz) / 2)}px;
+  } @else if $direction == bottom {
+    padding-bottom: #{($pdg - (($fz * ($lh / $fz)) - $fz) / 2)}px;
+  }
+}
+// .hoge { @include pdglh(top, 30, 10, 20); }  //padding-bottom: 25px;
+
+
+//-----------margin/padding vs line-height (mediaquery向け)-----------
+//margin vw - line-height
+//$lh -> PSDの行送り（px）
+@mixin mgnvwlh($direction, $mgn, $fz, $lh) {     //単位 全て px
+  @if $direction == top {
+    margin-top:    (($mgn - (($fz * ($lh / $fz)) - $fz) / 2) / $viewbase) * 100vw ;
+  } @else if $direction == bottom {
+    margin-bottom: (($mgn - (($fz * ($lh / $fz)) - $fz) / 2) / $viewbase) * 100vw ;
+  }
+}
+// .hoge { @include mgnvwlh (top, 20, 10, 30);}  //margin-top: 2.5vw;
+
+//padding vw - line-height
+//$lh -> PSDの行送り（px）
+@mixin pdgvwlh($direction, $pdg, $fz, $lh) {     //単位 全て px
+  @if $direction == top {
+    padding-top:    (($pdg - (($fz * ($lh / $fz)) - $fz) / 2) / $viewbase) * 100vw ;
+  } @else if $direction == bottom {
+    padding-bottom: (($pdg - (($fz * ($lh / $fz)) - $fz) / 2) / $viewbase) * 100vw ;
+  }
+}
+// .hoge { @include pdgvwlh (bottom, 20, 10, 30);}  //padding-bottom: 2.5vw;
+
+
+
+
+//----------------margin/padding (mediaquery向け)----------------
+//margin vw
+@mixin mgnvw1($direction, $mgn) {
+  @if $direction == top {
+    margin-top:    ($mgn / $viewbase) * 100vw ;
+  } @else if $direction == bottom {
+    margin-bottom: ($mgn / $viewbase) * 100vw ;
+  } @else if $direction == left {
+    margin-left:   ($mgn / $viewbase) * 100vw ;
+  } @else if $direction == right {
+    margin-right:  ($mgn / $viewbase) * 100vw ;
+  }
+}
+// .hoge { @include mgnvw1 (bottom, 15);}  //margin-bottom: 4vw;
+
+@mixin mgnvw3($t, $lr, $b) {
+  @if $lr == auto {
+  margin:($t / $viewbase) * 100vw  #{ 'auto ' }  ($b / $viewbase) * 100vw;
+  } @else {
+    margin:($t / $viewbase) * 100vw ($lr / $viewbase) * 100vw ($b / $viewbase) * 100vw;
+  }
+}
+// .hoge { @include mgnvw3(20, auto, 15);}  //margin: 5.33333vw auto 4vw;
+
+@mixin mgnvw4($t, $r, $b, $l) {
+  margin:($t / $viewbase) * 100vw ($r / $viewbase) * 100vw ($b / $viewbase) * 100vw ($l / $viewbase) * 100vw;
+}
+// .hoge { @include mgnvw4(20,10,30,15);}  //margin: 5.33333vw 2.66667vw 8vw 4vw;
+
+
+//padding vw
+@mixin pdgvw1($direction, $pdg) {
+  @if $direction == top {
+    padding-top:    ($pdg / $viewbase) * 100vw ;
+  } @else if $direction == bottom {
+    padding-bottom: ($pdg / $viewbase) * 100vw ;
+  } @else if $direction == left {
+    padding-left:   ($pdg / $viewbase) * 100vw ;
+  } @else if $direction == right {
+    padding-right:  ($pdg / $viewbase) * 100vw ;
+  }
+}
+// .hoge { @include pdgvw1 (bottom, 15);}  //padding-bottom: 4vw;
+
+@mixin pdgvw3($t, $lr, $b) {
+  padding:($t / $viewbase) * 100vw ($lr / $viewbase) * 100vw ($b / $viewbase) * 100vw;
+}
+// .hoge { @include pdgvw3(20, 10, 15);}  //padding: 5.33333vw 2.66667vw 4vw;
+
+@mixin pdgvw4($t, $r, $b, $l) {
+  padding:($t / $viewbase) * 100vw ($r / $viewbase) * 100vw ($b / $viewbase) * 100vw ($l / $viewbase) * 100vw;
+}
+// .hoge { @include pdgvw4(20,10,30,15);}  //padding: 5.33333vw 2.66667vw 8vw 4vw;
+
+
+
+
+
+//-------------------テキスト系-------------------
 //text両端揃え
 @mixin justify {
 	text-align: justify; // 両端揃え
@@ -25,14 +153,13 @@
 }
 
 //-------------------Flexbox-------------------
-@mixin flex { display: flex; }
+@mixin flex { display:flex; }
 
 @mixin flexwrap { flex-wrap: wrap; }
 @mixin flexnowrap { flex-wrap: nowrap; }
 
 @mixin flexstretch { align-items: stretch; }
 @mixin flexmiddle { align-items: center; }
-
 
 @mixin flexcenter {  justify-content: center; }
 @mixin flexbetween { justify-content:space-between; }
@@ -74,6 +201,26 @@
 
 // .hoge { @include centerX(top, 20%); }
 // .hoge { @include centerX(bottom, 80%); }
+
+
+
+//-------------------メディア系-------------------
+// padding-top で高さを確保
+@mixin ptpercent($width: 16, $height: 9) {   //対比 or pxで指定
+    position: relative;
+    padding-top: percentage($height / $width);
+    > * {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100% !important;
+        height: 100% !important;
+    }
+}
+// .hoge { @include ptpercent(750, 540); }  //padding-top: 72%;
+
+
+
 
 
 
