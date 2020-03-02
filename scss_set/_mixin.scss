@@ -66,9 +66,9 @@
 //$lh -> PSDの行送り（px）
 @mixin mgnvwlh($direction, $mgn, $fz, $lh) {     //単位 全て px
   @if $direction == top {
-    margin-top:    (($mgn - (($fz * ($lh / $fz)) - $fz) / 2) / $viewbase) * 100vw ;
+    margin-top:    (($mgn - (($fz * ($lh / $fz)) - $fz) / 2) / $vw_base) * 100vw ;
   } @else if $direction == bottom {
-    margin-bottom: (($mgn - (($fz * ($lh / $fz)) - $fz) / 2) / $viewbase) * 100vw ;
+    margin-bottom: (($mgn - (($fz * ($lh / $fz)) - $fz) / 2) / $vw_base) * 100vw ;
   }
 }
 // .hoge { @include mgnvwlh (top, 20, 10, 30);}  //margin-top: 2.5vw;
@@ -77,9 +77,9 @@
 //$lh -> PSDの行送り（px）
 @mixin pdgvwlh($direction, $pdg, $fz, $lh) {     //単位 全て px
   @if $direction == top {
-    padding-top:    (($pdg - (($fz * ($lh / $fz)) - $fz) / 2) / $viewbase) * 100vw ;
+    padding-top:    (($pdg - (($fz * ($lh / $fz)) - $fz) / 2) / $vw_base) * 100vw ;
   } @else if $direction == bottom {
-    padding-bottom: (($pdg - (($fz * ($lh / $fz)) - $fz) / 2) / $viewbase) * 100vw ;
+    padding-bottom: (($pdg - (($fz * ($lh / $fz)) - $fz) / 2) / $vw_base) * 100vw ;
   }
 }
 // .hoge { @include pdgvwlh (bottom, 20, 10, 30);}  //padding-bottom: 2.5vw;
@@ -91,28 +91,28 @@
 //margin vw
 @mixin mgnvw1($direction, $mgn) {
   @if $direction == top {
-    margin-top:    ($mgn / $viewbase) * 100vw ;
+    margin-top:    ($mgn / $vw_base) * 100vw ;
   } @else if $direction == bottom {
-    margin-bottom: ($mgn / $viewbase) * 100vw ;
+    margin-bottom: ($mgn / $vw_base) * 100vw ;
   } @else if $direction == left {
-    margin-left:   ($mgn / $viewbase) * 100vw ;
+    margin-left:   ($mgn / $vw_base) * 100vw ;
   } @else if $direction == right {
-    margin-right:  ($mgn / $viewbase) * 100vw ;
+    margin-right:  ($mgn / $vw_base) * 100vw ;
   }
 }
 // .hoge { @include mgnvw1 (bottom, 15);}  //margin-bottom: 4vw;
 
 @mixin mgnvw3($t, $lr, $b) {
   @if $lr == auto {
-  margin:($t / $viewbase) * 100vw  #{ 'auto ' }  ($b / $viewbase) * 100vw;
+  margin:($t / $vw_base) * 100vw  #{ 'auto ' }  ($b / $vw_base) * 100vw;
   } @else {
-    margin:($t / $viewbase) * 100vw ($lr / $viewbase) * 100vw ($b / $viewbase) * 100vw;
+    margin:($t / $vw_base) * 100vw ($lr / $vw_base) * 100vw ($b / $vw_base) * 100vw;
   }
 }
 // .hoge { @include mgnvw3(20, auto, 15);}  //margin: 5.33333vw auto 4vw;
 
 @mixin mgnvw4($t, $r, $b, $l) {
-  margin:($t / $viewbase) * 100vw ($r / $viewbase) * 100vw ($b / $viewbase) * 100vw ($l / $viewbase) * 100vw;
+  margin:($t / $vw_base) * 100vw ($r / $vw_base) * 100vw ($b / $vw_base) * 100vw ($l / $vw_base) * 100vw;
 }
 // .hoge { @include mgnvw4(20,10,30,15);}  //margin: 5.33333vw 2.66667vw 8vw 4vw;
 
@@ -120,29 +120,46 @@
 //padding vw
 @mixin pdgvw1($direction, $pdg) {
   @if $direction == top {
-    padding-top:    ($pdg / $viewbase) * 100vw ;
+    padding-top:    ($pdg / $vw_base) * 100vw ;
   } @else if $direction == bottom {
-    padding-bottom: ($pdg / $viewbase) * 100vw ;
+    padding-bottom: ($pdg / $vw_base) * 100vw ;
   } @else if $direction == left {
-    padding-left:   ($pdg / $viewbase) * 100vw ;
+    padding-left:   ($pdg / $vw_base) * 100vw ;
   } @else if $direction == right {
-    padding-right:  ($pdg / $viewbase) * 100vw ;
+    padding-right:  ($pdg / $vw_base) * 100vw ;
   }
 }
 // .hoge { @include pdgvw1 (bottom, 15);}  //padding-bottom: 4vw;
 
 @mixin pdgvw3($t, $lr, $b) {
-  padding:($t / $viewbase) * 100vw ($lr / $viewbase) * 100vw ($b / $viewbase) * 100vw;
+  padding:($t / $vw_base) * 100vw ($lr / $vw_base) * 100vw ($b / $vw_base) * 100vw;
 }
 // .hoge { @include pdgvw3(20, 10, 15);}  //padding: 5.33333vw 2.66667vw 4vw;
 
 @mixin pdgvw4($t, $r, $b, $l) {
-  padding:($t / $viewbase) * 100vw ($r / $viewbase) * 100vw ($b / $viewbase) * 100vw ($l / $viewbase) * 100vw;
+  padding:($t / $vw_base) * 100vw ($r / $vw_base) * 100vw ($b / $vw_base) * 100vw ($l / $vw_base) * 100vw;
 }
 // .hoge { @include pdgvw4(20,10,30,15);}  //padding: 5.33333vw 2.66667vw 8vw 4vw;
 
 
+//--------------幅系 (mediaquery向け)--------------
+// width vw
+@mixin wvw($w) {
+	width:($w / $vw_base) * 100vw;
+}
+// .hoge { @include wvw(300); }  //width: 80vw;
 
+// height vw
+@mixin hvw($w) {
+	height:($w / $vw_base) * 100vw;
+}
+// .hoge { @include hvw(30); }  //height: 8vw;
+
+// height vh
+@mixin hvh($h) {
+	height:($h / $vh_base) * 100vh;
+}
+// .hoge { @include hvh(550); }  //height: 82.45877vh;
 
 
 //-------------------テキスト系-------------------
