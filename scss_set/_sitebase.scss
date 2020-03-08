@@ -18,7 +18,14 @@ body {
   // font-family:$font_notosansjp;     //font.scss
   line-height: $line-height_base;     //variable.scss
   background: $backgroaund_color_base;     //variable.scss
+
+  text-align: justify; // 両端揃え
+  text-justify: inter-ideograph; // 両端揃えの種類(IE用)
+  -webkit-font-feature-settings: "palt" 1; //文字詰め
+  font-feature-settings: "palt" 1;
+  -webkit-text-size-adjust: 100%; //スマホでPC表示した際に勝手に文字が大きくなるのを防ぐ
 }
+
 
 //@include notosans_jp;     //Webfont 日本語 body{font-family:$font_notosansjp;} と併用する @font-face Noto Sans JP   font.scss
 //@include notosans_sc;     //Webfont 中国語（簡体字） @font-face Noto Sans SC   font.scss
