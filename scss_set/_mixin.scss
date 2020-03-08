@@ -1,8 +1,8 @@
-@charset "utf-8";
+@charset "UTF-8";
 //  Mixin
 
 //-------------------フォント系-------------------
-@mixin fz625 { font-size: 62.5%; }  //body { @include fz625; }
+@mixin fz625 { font-size: 62.5%; }  //html { @include fz625; }
 
 //rem
 @mixin fzr($fz) {
@@ -16,6 +16,36 @@
 }
 // .hoge { @include fzr(16); }  ->  font-size: 1.6 or 1 rem;
 
+
+//-----------フォント系 (mediaquery向け)-----------
+@mixin fzvwbase {    //html { @include fzvwbase; }
+  font-size: 100vw / ($vw_base / 10);    //レスポンシブ（スマホデザインサイズベース）基準フォントサイズ 10px
+}
+@mixin fzvwbreakpoint {    //html{ @include fzvwbreakpoint; }
+  font-size: 100vw / (($breakpoint / 2 )/ 10);    //レスポンシブ（ブレイクポイント1/2幅）基準フォントサイズ 10px
+}
+
+@mixin fzvw($fz:10){
+  font-size: getvw($fz);
+}
+@function getvw($size, $viewport:$vw_base){
+  $rate: 100 / $viewport;
+  @return $rate * $size * 1vw;
+}
+//  .hoge { @include fzvw(14); }  //font-size: 3.73333vw;
+
+@mixin fzvmin($fz:10){
+  font-size: getvmin($fz);
+}
+@function getvmin($size, $viewport:$vw_base){
+  $rate: 100 / $viewport;
+  @return $rate * $size * 1vmin;
+}
+//  .hoge { @include fzvmin(14); }  //font-size: 3.73333vmin;
+
+
+
+//-------------------フォント系 vs line-height-------------------
 //px + line-height  $lh -> PSDの行送り（px）
 @mixin fzlh($fz, $lh: 24) {
   font-size: #{$fz}px;

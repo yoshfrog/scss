@@ -1,4 +1,4 @@
-@charset "utf-8";
+@charset "UTF-8";
 // variable
 
 //フォント サイズ・カラー
@@ -40,6 +40,13 @@ $width_inner: 1000px ;
 //10px = 1rem にする時は yes -> html {font-size:62.5%;}指定
 $fz625: yes;
 
+//レスポンシブ（スマホデザインサイズベース $vw_base）基準フォントサイズ 10px
+$fzvwbase: yes;
+
+//レスポンシブ（ブレイクポイント $bpoint の 1/2幅）基準フォントサイズ 10px
+$fzvwbreakpoint: yes;
+$breakpoint: 768;
+
 
 //---------------------------------------------------------------------------------------------------------------
 // デザインの基準にするスマホサイズ（PSDのスマホサイズ）
@@ -57,6 +64,8 @@ $break_tablet : yes ; //'yes' or 'no' で記載  display_switch用(responsive.sc
 $mobile: 414px;  //breakpoint タブレット幅のとき および モバイル幅のとき → $tablet と $mobile記載
 $break_tablet_mobile : no ; //'yes' or 'no' で記載  display_switch用(responsive.scss)
 
+
+$display_switch : yes ; //pc sp tablet display:block;, display:none;分け
 //---------------------------------------------------------------------------------------------------------------
 
 
